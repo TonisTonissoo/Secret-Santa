@@ -16,12 +16,12 @@ def validate_participants(participants):
     for p in participants:
         if not isinstance(p, str):
             raise ValueError("Your friend is not a number")
-        p = p.strip().lower()
+        p = p.strip()
         if p == "":
             raise ValueError("You have a friend without a name?")
         participants_cleaned.append(p)
 
-    if len(participants_cleaned) != len(set(participants_cleaned)):
+    if len(participants_cleaned) != len({p.lower() for p in participants_cleaned}):
         raise ValueError("You had dupicate names. If you have friends with same names then use their surename.")
     return participants_cleaned
 
