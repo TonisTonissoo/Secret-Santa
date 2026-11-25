@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Secret Santa</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+    <main class="container">
+
+        <p class="christmas-text">
+            ✦ MERRY CHRISTMAS ✦
+        </p>
+
+        <div class="gift-icon" aria-hidden="true">
+            <svg viewBox="0 0 120 120">
+                <rect
+                    x="11" y="42"
+                    width="98" height="76"
+                    rx="4" fill="#a72d3d"
+                />
+
+                <rect
+                    x="3" y="30"
+                    width="114" height="25"
+                    rx="5" fill="#ce4550"
+                />
+
+                <rect
+                    x="50" y="30"
+                    width="20" height="88"
+                    fill="#e5be77"
+                />
+
+                <path
+                    d="M60 30 C15 25 8 -15 60 30
+                       C112 -15 105 25 60 30"
+                    fill="none"
+                    stroke="#e5be77"
+                    stroke-width="8"
+                    stroke-linecap="round"
+                />
+            </svg>
+        </div>
+
+        <h1>Secret Santa</h1>
+
+        <p class="subtitle">
+            Your Christmas surprise is waiting.
+        </p>
+
+        <form id="reveal-form">
+
+            <label for="secret-code">
+                Your secret code
+            </label>
+
+            <input
+                type="text"
+                id="secret-code"
+                placeholder="Paste your secret code here..."
+                autocomplete="off"
+                autocapitalize="off"
+                spellcheck="false"
+                required
+            >
+
+            <button type="submit">
+                Reveal my Secret Santa
+            </button>
+
+        </form>
+
+        <p id="error-message" role="alert" hidden></p>
+
+        <section id="result" aria-live="polite" hidden>
+
+            <p>You are buying a gift for</p>
+
+            <h2 id="recipient-name"></h2>
+
+            <p>Keep it a secret!</p>
+
+            <button id="hide-button" type="button">
+                Hide result
+            </button>
+
+        </section>
+
+        <footer>
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+            >
+                <path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/>
+                <path d="m9 12 2 2 4-4"/>
+            </svg>
+
+            Private. No accounts. No tracking.
+        </footer>
+
+    </main>
+
+</body>
+</html>
