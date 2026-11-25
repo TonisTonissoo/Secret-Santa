@@ -1,6 +1,7 @@
 import json
 import secrets
 from pathlib import Path
+from generator.encryption import encrypt_name
 
 def load_participants(file_path):
     with open(file_path, 'r', encoding='utf-8') as f:
@@ -35,10 +36,29 @@ def draw_participants(participants):
     result = dict(zip(participants, receivers))
     return result
 
-file = Path("examples/participants.example.json")
+def generate_codes(assignments):
+    codes = {}
+    for giver, receiver in assignments.items():
+        coded = encrypt_name(receiver)
+        codes[giver] = coded
+    return codes
 
-participants = load_participants(file)
-participants = validate_participants(participants)
+def save_codes(codes, file_path):
+    with open(file_path, "x", encoding="utf-8") as f:
+        json.dump(codes, f, indent=4, ensure_ascii=False)
 
-result = draw_participants(participants)
-print(result)
+def main():
+    input_file = Path("private/participants.json")
+    output_file = Path("private/keys.json")
+
+    participants = load_participants(input_file)
+    validated = validate_participants(participants)
+
+    assignments = draw_participants(validated)
+    codes = generate_codes(assignments)
+    save_codes(codes, output_file)
+    print(f"Successfully generated {len(codes)} Secret Santa codes.")
+    print(f"Codes saved to: {output_file}")
+
+if __name__ == "__main__":
+    main()
