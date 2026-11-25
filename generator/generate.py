@@ -48,17 +48,41 @@ def save_codes(codes, file_path):
         json.dump(codes, f, indent=4, ensure_ascii=False)
 
 def main():
-    input_file = Path("private/participants.json")
-    output_file = Path("private/keys.json")
+    try:
+        input_file = Path("private/participants.json")
+        output_file = Path("private/keys.json")
 
-    participants = load_participants(input_file)
-    validated = validate_participants(participants)
+        participants = load_participants(input_file)
+        validated = validate_participants(participants)
 
-    assignments = draw_participants(validated)
-    codes = generate_codes(assignments)
-    save_codes(codes, output_file)
-    print(f"Successfully generated {len(codes)} Secret Santa codes.")
-    print(f"Codes saved to: {output_file}")
+        assignments = draw_participants(validated)
+        codes = generate_codes(assignments)
+        save_codes(codes, output_file)
+        print(f"Successfully generated {len(codes)} Secret Santa codes.")
+        print(f"Codes saved to: {output_file}")
+        return 0
+    except FileNotFoundError:
+        print("Error: Required file or directory not found.")
+
+    except json.JSONDecodeError:
+        print("Error: Invalid JSON format.")
+
+    except KeyError:
+        print("Error: Missing 'participants' key in JSON file.")
+
+    except FileExistsError:
+        print("Error: Secret Santa codes already exist. Cannot overwrite.")
+
+    except ValueError as e:
+        print(f"Error: {e}")
+
+    except TypeError:
+        print("Error: Invalid data structure.")
+
+    except OSError:
+        print("Error: Unable to read or write the file.")
+
+    return 1
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
