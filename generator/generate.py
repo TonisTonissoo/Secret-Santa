@@ -25,14 +25,20 @@ def validate_participants(participants):
         raise ValueError("You had dupicate names. If you have friends with same names then use their surename.")
     return participants_cleaned
 
-        
+def draw_participants(participants):
+    receivers = participants.copy()
+    while True:
+        secrets.SystemRandom().shuffle(receivers)
+        if all(p != r for p, r in zip(participants, receivers)):
+            break
 
-
-
-
-
+    result = dict(zip(participants, receivers))
+    return result
 
 file = Path("examples/participants.example.json")
 
 participants = load_participants(file)
-print(isinstance(participants, list))
+participants = validate_participants(participants)
+
+result = draw_participants(participants)
+print(result)
