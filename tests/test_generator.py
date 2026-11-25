@@ -5,8 +5,14 @@ from generator.generate import (
     validate_participants,
     draw_participants
 )
+from generator.encryption import(
+    encrypt_name,
+    decrypt_name
+)
 
 from pathlib import Path
+from cryptography.exceptions import InvalidTag
+import base64
 
 def test_valid_participants():
     participants = ["Alice", "Bob", "Charlie"]
@@ -92,3 +98,42 @@ def test_load_participants():
     file = Path("examples/participants.example.json")
     participants = load_participants(file)
     assert expected == participants
+
+@pytest.mark.parametrize("name", [
+    "Alberto",
+    "Jüri",
+    "Õnne",
+    "Mari Tamm",
+    "Émilie"
+])
+def test_encrypt_decrypt(name):
+    en_name = encrypt_name(name)
+    assert name == decrypt_name(en_name)
+
+
+def test_unique_codes():
+    name = "Alberto"
+
+    en1 = encrypt_name(name)
+    en2 = encrypt_name(name)
+
+    assert en1 != en2
+
+def test_invalid_code():
+    code = "invalid_code"
+
+    with pytest.raises(ValueError):
+        decrypt_name(code)
+
+def test_modified_code():
+    name = "Alberto"
+    code = encrypt_name(name)
+
+    data = bytearray(base64.urlsafe_b64decode(code))
+
+    data[-1] ^= 1
+
+    modified_code = base64.urlsafe_b64encode(data).decode("utf-8")
+
+    with pytest.raises(InvalidTag):
+        decrypt_name(modified_code)
